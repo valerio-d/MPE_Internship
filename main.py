@@ -24,7 +24,7 @@ with fits.open(main_image_cutout) as hdu_list: #use with to safely close the fil
     #print(header)
     image_data = hdu_list[0].data #shape: (4, 256, 256)
     r_band = image_data[1] #red is index 1
-    #print(r_band)
+    
 
 norm = ImageNormalize(r_band, interval=ZScaleInterval())
 plt.figure(figsize=(8,8))
@@ -36,7 +36,7 @@ plt.show()
 # -- Inspecting the PSF --
 with fits.open(main_image_psf) as psf_hdu_list:
     psf_hdu_list.info()
-    psf_data = psf_hdu_list[0].data
+    psf_data = psf_hdu_list[0].data * 1.3
 
     print('PSF shape:', psf_data.shape) #the dimentions of the array -> NAXIS1 is 1D Arrays, NAXIS2 is 2D Arrays, NAXIS3 is 3D Arrays
     print('PSF sum:', psf_data.sum()) # A PSF that sums to 1.0 means: "if I stamp this at a location and scale it by flux F, the total flux contributed to the image equals F."
@@ -138,6 +138,7 @@ def create_synthetic_image(image_shape, psf, sources_x, sources_y, fluxes): #tak
     return synthetic
 
 synthetic_image = create_synthetic_image(r_band.shape, psf_data, xs, ys, fluxes) 
+synthetic_image_data = synthetic_image.data
 #assign the arguments: image shape (the r-band shape), the psf data, the xs and ys coordinates for each psf, and the fluxes for each psf
 
 # -- PLOT THE SYNTHETIC IMAGE --
@@ -154,3 +155,35 @@ axes[1].set_title('synthetic PSF image')
 
 plt.tight_layout()
 plt.show()
+
+# plotting in LOGARTITHMIC scale
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+LogNorm_minimum_value = 0.1 #minumum value to handle fully black
+LogNorm_maximum_value = r_band.max() #minumum value to handle fully black
+
+logarithmic_image1 = axes[0].imshow(r_band, origin="lower", norm=LogNorm(vmin=LogNorm_minimum_value, vmax=LogNorm_maximum_value), cmap="gray")
+axes[0].set_title('original r-band image')
+logarithmic_image2 = axes[1].imshow(synthetic_image, origin="lower", norm=LogNorm(vmin=LogNorm_minimum_value, vmax=LogNorm_maximum_value), cmap="gray")
+axes[1].set_title('synthetic PSF image')
+
+
+low_tick = np.percentile(r_band[r_band > 0], 20) #ticks for image 1
+medium_tick = np.percentile(r_band[r_band > 0], 50)#calculate percentiles using only positive pixels to avoid math issues
+high_tick = np.percentile(r_band[r_band > 0], 90)
+low_tick2 = np.percentile(synthetic_image[synthetic_image > 0], 20) #ticks for image 2
+medium_tick2 = np.percentile(synthetic_image[synthetic_image > 0], 50)
+high_tick2 = np.percentile(synthetic_image[synthetic_image > 0], 90)
+
+
+cbar_1 = fig.colorbar(logarithmic_image1, ax=axes[0], ticks=[low_tick, medium_tick, high_tick]) # Create specific colorbars for each of the images
+cbar_2 = fig.colorbar(logarithmic_image2, ax=axes[1], ticks=[low_tick, medium_tick, high_tick]) 
+# Format the labels
+cbar_1.ax.set_yticklabels([f"{int(low_tick):,}", f"{int(medium_tick):,}", f"{int(high_tick):,}"])
+cbar_2.ax.set_yticklabels([f"{int(low_tick):,}", f"{int(medium_tick):,}", f"{int(high_tick):,}"])
+
+plt.tight_layout()
+plt.show()
+
+print(header)
+print(psf_hdu_list[0].header)
+print(wcs)
