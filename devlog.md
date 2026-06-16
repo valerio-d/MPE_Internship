@@ -14,3 +14,13 @@ Lastly, I plotted the identified neighboring PSF sources over the original r-ban
 
 Next, I will have to work on creating the actual synthetic image which will then be subtracted from the main image, removing the nearby interfering objects.
 In the future, I plan on "generalizing" this project, to ensure that it works with any FITS Files.
+
+## Day 2
+
+Today, I wrote the function that created the actual Synthetic Image.
+Although I had to write code to ensure that the main object (the one which we are interested in) isn't included in the array of neighbors, which took a lot of my time, I managed to achieve a successfilly SYnthetic PSF Image that I will then be able to subtract from my Main Image.
+Another problem that I encountered during this process was that the PSF images were in a different resolution than my main image. After creating a simple line graph which showed the size/resolution of both objects at once, I was able to find out that the change in resolution was a factor of 4. Therefore, I used scipy's zoom() function whcih allowed me to resize the image and achieve a precise and effective PSF Synthetic Image.
+
+### What's Next?
+
+Next, I will have to subtract the PSF Synthetic Image I created from the original r-band Image. This will allow me to have a clear image of the quasar only and no interferences from nearby objects. This should be fairly easy, meaning that I will not have to spend much of my time, and that I will be able to immediately start with the Aperture Photometry with the new, cleaned-up image.
