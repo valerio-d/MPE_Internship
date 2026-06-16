@@ -23,7 +23,7 @@ with fits.open(main_image_cutout) as hdu_list: #use with to safely close the fil
     header = hdu_list[0].header
     #print(header)
     image_data = hdu_list[0].data #shape: (4, 256, 256)
-    r_band = image_data[1] #red is index 1
+    r_band = image_data[1] #red is index 1 #this is fluxes
     
 
 norm = ImageNormalize(r_band, interval=ZScaleInterval())
@@ -100,7 +100,7 @@ fig, ax = plt.subplots(figsize=(10, 10))
 ax.imshow(r_band, origin='lower', norm=norm, cmap='bone')
 ax.scatter(xs, ys, s=120, facecolors='none', edgecolors='lime', linewidths=1.5)
 ax.set_title(f'{len(filtered_psf_neighbors)} PSF neighbors overlaid on r-band image')
-plt.show()
+#plt.show()
 
 #print(neighbors.colnames)  # see all columns
 fluxes = filtered_psf_neighbors['flux_r'] 
@@ -133,7 +133,7 @@ def create_synthetic_image(image_shape, psf, sources_x, sources_y, fluxes): #tak
         if img_x1 <= img_x0 or img_y1 <= img_y0:
             continue  # source is fully outside image, skip
         
-        synthetic[img_y0:img_y1, img_x0:img_x1] += flux * psf[psf_y0:psf_y1, psf_x0:psf_x1]
+        synthetic[img_y0:img_y1, img_x0:img_x1] += flux * psf[psf_y0:psf_y1, psf_x0:psf_x1] #equation to create the psf
     
     return synthetic
 
@@ -154,7 +154,7 @@ axes[1].imshow(synthetic_image, origin='lower', norm=norm_syn, cmap='gray')
 axes[1].set_title('synthetic PSF image')
 
 plt.tight_layout()
-plt.show()
+#plt.show()
 
 # plotting in LOGARTITHMIC scale
 fig, axes = plt.subplots(1, 2, figsize=(16, 8))
@@ -184,6 +184,31 @@ cbar_2.ax.set_yticklabels([f"{int(low_tick):,}", f"{int(medium_tick):,}", f"{int
 plt.tight_layout()
 plt.show()
 
-print(header)
-print(psf_hdu_list[0].header)
-print(wcs)
+# print(header) print(psf_hdu_list[0].header) print(wcs)
+
+# -- IDENTIFICATION OF THE SIZE/BRIGHTNESS FACTOR PROBLEM --
+#identify the lowest y-value in the array to find the bottom object (what we will use as reference to find the mismatch)
+bottom_object_coord = np.argmin(ys) #get the lowest value in the array
+
+btm_obj_x = int(round(xs[bottom_object_coord])) #round coords to nearest 
+btm_obj_y = int(round(ys[bottom_object_coord]))
+
+#slicing the object in the center
+slice_center_row = btm_obj_y
+slice_start_col = btm_obj_x - 25 #creating a 50x50 around the object (the area that we will graph)
+slice_end_col = btm_obj_x + 25
+
+og_line_graph = r_band[slice_center_row, slice_start_col:slice_end_col] #the logic is r_band[50,100] outputs the brightness (the flux value) at row 50, column 100
+synthetic_line_graph = synthetic_image[slice_center_row, slice_start_col:slice_end_col]
+line_graph_px_positions = np.arange(slice_start_col, slice_end_col)
+
+plt.figure(figsize=(10, 6))
+plt.plot(line_graph_px_positions, og_line_graph, label='OG Object Line Graph', color='blue', linewidth=2)
+plt.plot(line_graph_px_positions, synthetic_line_graph, label='Synthetic Image Object Line Graph', color='red', linewidth=2)
+plt.xlabel('Pixel position (x)')
+plt.ylabel('Pixel brightness')
+plt.title('inspectig the size/brightness factor problem')
+plt.legend()
+plt.grid(alpha=0.3)
+plt.show()
+
