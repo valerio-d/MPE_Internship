@@ -24,3 +24,7 @@ Another problem that I encountered during this process was that the PSF images w
 ### What's Next?
 
 Next, I will have to subtract the PSF Synthetic Image I created from the original r-band Image. This will allow me to have a clear image of the quasar only and no interferences from nearby objects. This should be fairly easy, meaning that I will not have to spend much of my time, and that I will be able to immediately start with the Aperture Photometry with the new, cleaned-up image.
+
+## Day 3
+
+Today, I started off by importing the line graph that I performed the other day, to my new Jupyter Notebook. I decided to switch to a Jupyter Notebook for this Porject because of how much more organized the environment is, and how quicker it is to make changes and visualize their results. During the implemtation of the line graph, I noticed that, although I had zoomed the image, the graph still didn't look right. I therefore found the brighstest point on both the original and synthetic image and realized that there was a difference of 1.3. After multiplying the r_band data by this factor to achieve the highest accuracy possible, I moved on to learning how to perform Aperture Photometry, by using the original image so that I could compare my results with the online data. However, I found out that my results were not similar to them.
