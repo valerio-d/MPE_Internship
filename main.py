@@ -40,7 +40,7 @@ plt.show()
 # -- Inspecting the PSF --
 with fits.open(main_image_psf) as psf_hdu_list:
     psf_hdu_list.info()
-    psf_data = psf_hdu_list[0].data * 644 #found this multiplication factor by dividing brightest point on og image by the brightest point on psf image
+    psf_data = psf_hdu_list[0].data #* 644 #found this multiplication factor by dividing brightest point on og image by the brightest point on psf image
 
     print('PSF shape:', psf_data.shape) #the dimentions of the array -> NAXIS1 is 1D Arrays, NAXIS2 is 2D Arrays, NAXIS3 is 3D Arrays
     print('PSF sum:', psf_data.sum()) # A PSF that sums to 1.0 means: "if I stamp this at a location and scale it by flux F, the total flux contributed to the image equals F."
@@ -239,7 +239,7 @@ psf_data_enlarged = psf_data_enlarged / psf_data_enlarged.sum() * psf_data.max()
 print(psf_data_enlarged.sum()) #verify sum = 1
 
 #replot
-synthetic_image = create_synthetic_image(r_band.shape, psf_data_enlarged, xs_without_target, ys_without_target, fluxes)
+synthetic_image = create_synthetic_image(r_band.shape, psf_data_enlarged, xs_without_target, ys_without_target, fluxes_without_target)
 fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 LogNorm_minimum_value = 0.1 #minumum value to handle fully black
 LogNorm_maximum_value = r_band.max() #minumum value to handle fully black
