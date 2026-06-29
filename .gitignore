@@ -1,2 +1,40 @@
+# Virtual environments
 .venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Generated output folders
+*_output/
+
+# Generated FITS products
+target_*.fits
+neighbors_catalog.fits
+
+# Large datasets
 FITS/
+
+# Logs
+*.log

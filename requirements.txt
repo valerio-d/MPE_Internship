@@ -1,5 +1,8 @@
-astropy
-matplotlib
 numpy
 scipy
-photoutils
+matplotlib
+ipympl
+astropy
+photutils
+requests
+tabulate
