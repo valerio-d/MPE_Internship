@@ -4,7 +4,7 @@ All examples use r-band data from DESI Legacy Survey DR10.
 
 **Field source detection** — COSMOS field (RA 150.1191, Dec +2.1956)
 All catalog sources identified and overlaid on the image before subtraction.
-![WCS verification — neighbor sources overlaid](assets/screenshots/01_wcs_verification.png)
+![WCS verification — neighbor sources overlaid](assets\screenshots\01_wcs_verification_result.png)
 
 ---
 
