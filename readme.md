@@ -42,23 +42,27 @@ Left: original image with contaminating sources. Right: cleaned image with neigh
 
 ---
 
-**Aperture photometry on cleaned image** — (RA 192.6009, Dec -28.2675)
+**Aperture photometry on cleaned image** — (RA 192.6010, Dec -28.2669)
 Concentric apertures from 0.5 to 20 arcsec placed on the cleaned field.
 ![Aperture photometry circles on cleaned image](assets/screenshots/05_aperture_photometry.png)
 
 ---
 
-### Final Fluxes/Area Results — (RA 192.6009, Dec -28.2675)
+**Final Fluxes vs. Radius** - (RA  192.6010, Dec -28.2669)
+Graph showing plotted Legacy Survey readings, Aperture Photometry results before and after Deblending
+![Aperture Photometry results Comparing Graph](assets/screenshots/06_fluxes_over_area_results.png)
 
+---
+**Final Fluxes/Area Results** — (RA 192.6010, Dec -28.2669)
 Graph showing Final Fluxes/Area plots for Legacy Survey Results, Uncleaned Aperture Photometry, and Final, Deblended Readings (Left), alongside a zoomed-in view of the end of the graph showing lower readings after deblending (Right).
 
 <table border="0">
   <tr>
     <td width="50%" align="center">
-      <img alt="Flux_over_Area" src="assets/screenshots/06_final_results.png" width="100%">
+      <img alt="Flux_over_Area" src="assets/screenshots/07_final_results.png" width="100%">
     </td>
     <td width="50%" align="center">
-      <img alt="Flux_over_Area_zoom" src="assets/screenshots/06_final_results_zoomed.png" width="100%">
+      <img alt="Flux_over_Area_zoom" src="assets/screenshots/07_final_results_zoomed.png" width="100%">
     </td>
   </tr>
 </table>
